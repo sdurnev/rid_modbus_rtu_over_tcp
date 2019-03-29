@@ -9,9 +9,9 @@ Programm flags:
 
 -speed - speed of serial port in host (defaut value 115200);
 
--id - janitaza modbus slave ID (defaut value 1);
+-id - janitza modbus slave ID (defaut value 1);
 
--q - quantity of janitaza modbus arguments, value range 1 - 61 (defaut value 61).
+-q - quantity of janitza modbus arguments, value range 1 - 61 (defaut value 61).
 
 Example:
 
