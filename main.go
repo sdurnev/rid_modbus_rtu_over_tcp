@@ -44,7 +44,7 @@ const server = "10.10.12.23:2001"
 func main() {
 	var source = []byte{1, 3, 0, 143, 0, 10, 244, 38}
 
-	fmt.Print(handleTCPConnection(source))
+	fmt.Println(handleTCPConnection(source))
 
 	//fmt.Println(params[1].Id)
 
@@ -71,7 +71,7 @@ func main() {
 
 	results, err := client.ReadInputRegisters(19000, uint16(*regQuantity)*2)
 	if err != nil {
-		fmt.Printf("{\"status\":\"error\", \"error\":\"%s\"}", err)
+		//fmt.Printf("{\"status\":\"error\", \"error\":\"%s\"}", err)
 	}
 
 	i := 0

@@ -68,6 +68,7 @@ func (mb *rtuPackager) Encode(pdu *ProtocolDataUnit) (adu []byte, err error) {
 
 	adu[length-1] = byte(checksum >> 8)
 	adu[length-2] = byte(checksum)
+	fmt.Printf("%x", adu) //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	return
 }
 
