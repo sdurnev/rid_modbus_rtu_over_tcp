@@ -24,7 +24,7 @@ const version = "0.01.0"
 
 type Modbusparam struct {
 	Num        int
-	Id         float32
+	Id         uint16
 	Name       string
 	TypeOfData string
 }
@@ -246,10 +246,10 @@ var params5 = Modbusparams{
 	Modbusparam{201, 40625, "40625_GensetManager1.genset_OK", "DT_ONOFF"},
 	Modbusparam{202, 40627, "40627_GensetManager1.KWh", "DT_NUMERIC"},
 	Modbusparam{203, 40628, "40628_GensetManager1.KVARh", "DT_NUMERIC"},
-	Modbusparam{204, 40655, "40655_EngineControl1.RPM", "DT_NUMERIC"},
 }
 
 var params6 = Modbusparams{
+	Modbusparam{204, 40655, "40655_EngineControl1.RPM", "DT_NUMERIC"},
 	Modbusparam{205, 40665, "40665_Modbus_MAN_mode", "DT_NUMERIC"},
 	Modbusparam{206, 40670, "40670_Modbus_AUTO_mode", "DT_NUMERIC"},
 	Modbusparam{207, 40675, "40675_Modbus_RESET_mode", "DT_NUMERIC"},
@@ -258,24 +258,18 @@ var params6 = Modbusparams{
 	Modbusparam{210, 40690, "40690_Modbus_TEST_mode", "DT_NUMERIC"},
 	Modbusparam{211, 40695, "40695_Modbus_K1_activation", "DT_NUMERIC"},
 	Modbusparam{212, 40700, "40700_Modbus_K2_activation", "DT_NUMERIC"},
-}
-
-var params7 = Modbusparams{
 	Modbusparam{213, 40721, "40721_Battery_service_timer", "DT_NUMERIC"},
 	Modbusparam{214, 40746, "40746_K1_output", "DT_NUMERIC"},
 	Modbusparam{215, 40759, "40759_Test_active", "DT_NUMERIC"},
 }
 
-var params8 = Modbusparams{
+var params7 = Modbusparams{
 	Modbusparam{217, 40951, "40951_Refueling_pump_output", "DT_NUMERIC"},
 	Modbusparam{218, 41109, "41109_Work_hours", "DT_NUMERIC"},
 	Modbusparam{220, 41375, "41375_Service_hours", "DT_NUMERIC"},
 	Modbusparam{221, 41395, "41395_Fuel_litres", "DT_NUMERIC"},
 	Modbusparam{223, 41403, "41403_Autonomy_hours", "DT_NUMERIC"},
 	Modbusparam{231, 41753, "41753_Daily_work_hours", "DT_NUMERIC"},
-}
-
-var params9 = Modbusparams{
 	Modbusparam{232, 42171, "42171_Start_counter", "DT_NUMERIC"},
 	Modbusparam{233, 42440, "42440_Engine_warranty", "DT_REAL_3"},
 	Modbusparam{234, 42442, "42442_Automatic_set_50Hz", "DT_NUMERIC"},
@@ -297,56 +291,465 @@ func main() {
 	//var data []float32
 
 	addressIP := flag.String("ip", "10.10.12.23:2001", "a string")
-	//serialSpeed := flag.Int("speed", 115200, "a int")
+	requestType := flag.Int("request type", 7, "a int")
 	slaveID := flag.Int("id", 1, "an int")
-	regQuantity := flag.Uint("q", 115, "an uint")
+	//regQuantity := flag.Uint("q", 115, "an uint")
 	flag.Parse()
 	serverParam := fmt.Sprint(*addressIP)
+	var reqType = *requestType
 
+	switch reqType {
+	case 1:
+		var answer = readModbus(byte(*slaveID), uint16(2), byte(42), string(serverParam))
+		RequestTyp1(answer)
+	case 2:
+		var answer = readModbus(byte(*slaveID), uint16(50), byte(59), string(serverParam))
+		RequestTyp2(answer)
+	case 3:
+		var answer = readModbus(byte(*slaveID), uint16(134), byte(103), string(serverParam))
+		RequestTyp3(answer)
+	case 4:
+		var answer = readModbus(byte(*slaveID), uint16(422), byte(62), string(serverParam))
+		RequestTyp4(answer)
+	case 5:
+		var answer = readModbus(byte(*slaveID), uint16(540), byte(89), string(serverParam))
+		RequestTyp5(answer)
+	case 6:
+		var answer = readModbus(byte(*slaveID), uint16(655), byte(92), string(serverParam))
+		RequestTyp6(answer)
+	case 7:
+		RequestTyp7(byte(*slaveID), string(serverParam))
+	}
+}
+
+/*
+	i := 0
+	for i < len(results) {
+		a := Float32frombytes(results[i : i+4])
+		if math.IsNaN(float64(a)) {
+			data = append(data, 0)
+		} else {
+			data = append(data, a)
+		}
+		i += 4
+	}*/
+/*
+	for l := 0; l < len(data); l++ {
+		if l == 0 {
+			fmt.Printf("{ \"%s\": ", paramName[l])
+		} else {
+			fmt.Printf(", \"%s\": ", paramName[l])
+		}
+		fmt.Print(data[l])
+	}
+	if len(results) != 0 {
+		fmt.Printf(", \"version\": \"%s\"}", version)
+	}*/
+func RequestTyp7(slaveID byte, serverParam string) {
+	for l := 0; l < len(params7); l++ {
+		time.Sleep(20 * time.Millisecond)
+		//fmt.Println(l)
+		if l == 0 {
+			fmt.Printf("{\"%s\": ", params7[l].Name)
+			var answer = readModbus(slaveID, params7[l].Id-40000, byte(1), string(serverParam))
+			//fmt.Println(answer)
+			fmt.Printf("%d", binary.BigEndian.Uint16(answer))
+			fmt.Print("},")
+		} else if l > 0 && l < 19 {
+			fmt.Printf("{\"%s\": ", params7[l].Name)
+			var answer = readModbus(slaveID, params7[l].Id-40000, byte(1), string(serverParam))
+			//fmt.Println(answer)
+			fmt.Printf("%d", binary.BigEndian.Uint16(answer))
+			fmt.Print("},")
+		} else if l == 19 {
+			fmt.Printf("{\"%s\": ", params7[l].Name)
+			var answer = readModbus(slaveID, params7[l].Id-40000, byte(1), string(serverParam))
+			//fmt.Println(answer)
+			fmt.Printf("%d", answer)
+			fmt.Printf("},{\"version\": \"%s\"}", version)
+		} else {
+
+		}
+	}
+}
+
+func RequestTyp6(ansver []byte) {
+	data := make([]uint16, 0)
+	i := 0
+	for i < len(ansver) {
+		a := binary.BigEndian.Uint16(ansver[i : i+2])
+		if math.IsNaN(float64(a)) {
+			data = append(data, 0)
+		} else {
+			data = append(data, a)
+		}
+		i += 2
+	}
+	fmt.Println(data)
+	fmt.Println(len(data))
+	t := 0
+	for l := 0; l < len(data); l++ {
+		if l == 0 {
+			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 10 {
+			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 15 {
+			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 20 {
+			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 25 {
+			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 30 {
+			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 35 {
+			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 40 {
+			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 45 {
+			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 66 {
+			fmt.Printf("{ \"%s\": ", params6[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 91 {
+			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Printf("},{\"version\": \"%s\"}", version)
+			t++
+		} else {
+
+		}
+	}
+}
+
+func RequestTyp5(ansver []byte) {
+	data := make([]uint16, 0)
+	i := 0
+	for i < len(ansver) {
+		a := binary.BigEndian.Uint16(ansver[i : i+2])
+		if math.IsNaN(float64(a)) {
+			data = append(data, 0)
+		} else {
+			data = append(data, a)
+		}
+		i += 2
+	}
+	fmt.Println(data)
+	fmt.Println(len(data))
+	t := 0
+	for l := 0; l < len(data); l++ {
+		if l == 0 {
+			fmt.Printf("{\"%s\": ", params5[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 3 {
+			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 17 {
+			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 23 {
+			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 44 {
+			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 51 && l < 62 {
+			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 65 && l < 69 {
+			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 83 && l < 86 {
+			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 87 {
+			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 88 {
+			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Printf("},{\"version\": \"%s\"}", version)
+			t++
+		} else {
+
+		}
+	}
+}
+
+func RequestTyp4(ansver []byte) {
+	data := make([]uint16, 0)
+	i := 0
+	for i < len(ansver) {
+		a := binary.BigEndian.Uint16(ansver[i : i+2])
+		if math.IsNaN(float64(a)) {
+			data = append(data, 0)
+		} else {
+			data = append(data, a)
+		}
+		i += 2
+	}
+	fmt.Println(data)
+	fmt.Println(len(data))
+	t := 0
+	for l := 0; l < len(data); l++ {
+		if l == 0 {
+			fmt.Printf("{\"%s\": ", params4[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 0 && l < 17 {
+			fmt.Printf("{ \"%s\": ", params4[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 44 && l < 47 {
+			fmt.Printf("{ \"%s\": ", params4[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 49 && l < 52 {
+			fmt.Printf("{ \"%s\": ", params4[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 53 {
+			fmt.Printf("{ \"%s\": ", params4[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 54 && l < 61 {
+			fmt.Printf("{ \"%s\": ", params4[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 61 {
+			fmt.Printf("{ \"%s\": ", params4[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Printf("},{\"version\": \"%s\"}", version)
+			t++
+		} else {
+
+		}
+	}
+}
+
+func RequestTyp3(ansver []byte) {
+	data := make([]uint16, 0)
+	i := 0
+	for i < len(ansver) {
+		a := binary.BigEndian.Uint16(ansver[i : i+2])
+		if math.IsNaN(float64(a)) {
+			data = append(data, 0)
+		} else {
+			data = append(data, a)
+		}
+		i += 2
+	}
+	fmt.Println(data)
+	fmt.Println(len(data))
+
+	t := 0
+	for l := 0; l < len(data); l++ {
+		if l == 0 {
+			fmt.Printf("{\"%s\": ", params3[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 0 && l < 75 {
+			fmt.Printf("{ \"%s\": ", params3[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 78 && l < 98 {
+			fmt.Printf("{ \"%s\": ", params3[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 100 {
+			fmt.Printf("{ \"%s\": ", params3[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Printf("},{\"version\": \"%s\"}", version)
+			t++
+		} else {
+
+		}
+	}
+
+}
+
+func RequestTyp2(ansver []byte) {
+	data := make([]uint16, 0)
+	i := 0
+	for i < len(ansver) {
+		a := binary.BigEndian.Uint16(ansver[i : i+2])
+		if math.IsNaN(float64(a)) {
+			data = append(data, 0)
+		} else {
+			data = append(data, a)
+		}
+		i += 2
+	}
+	fmt.Println(data)
+	fmt.Println(len(data))
+	t := 0
+	for l := 0; l < len(data); l++ {
+		if l == 0 {
+			fmt.Printf("{\"%s\": ", params2[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 1 {
+			fmt.Printf("{ \"%s\": ", params2[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 4 && l < 7 {
+			fmt.Printf("{ \"%s\": ", params2[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 9 && l < 20 {
+			fmt.Printf("{ \"%s\": ", params2[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 21 {
+			fmt.Printf("{ \"%s\": ", params2[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 26 && l < 58 {
+			fmt.Printf("{ \"%s\": ", params2[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 58 {
+			fmt.Printf("{ \"%s\": ", params2[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Printf("},{\"version\": \"%s\"}", version)
+			t++
+		} else {
+
+		}
+	}
+}
+
+func RequestTyp1(ansver []byte) {
+	data := make([]uint16, 0)
+	i := 0
+	for i < len(ansver) {
+		a := binary.BigEndian.Uint16(ansver[i : i+2])
+		if math.IsNaN(float64(a)) {
+			data = append(data, 0)
+		} else {
+			data = append(data, a)
+		}
+		i += 2
+	}
+	fmt.Println(data)
+	fmt.Println(len(data))
+	t := 0
+	for l := 0; l < len(data); l++ {
+		if l == 0 {
+			fmt.Printf("{\"%s\": ", params1[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 2 {
+			fmt.Printf("{ \"%s\": ", params1[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 32 && l < 39 {
+			fmt.Printf("{ \"%s\": ", params1[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l > 39 && l < 41 {
+			fmt.Printf("{ \"%s\": ", params1[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Print("},")
+			t++
+		} else if l == 41 {
+			fmt.Printf("{ \"%s\": ", params1[t].Name)
+			fmt.Printf("%d", data[l])
+			fmt.Printf("},{\"version\": \"%s\"}", version)
+			t++
+		} else {
+
+		}
+	}
+}
+
+func readModbus(slaveID byte, startReg uint16, regQuantity byte, serverParam string) []byte {
 	handler := modbus.NewRTUOverTCPClientHandler(serverParam)
-	handler.SlaveId = byte(*slaveID)
+	handler.SlaveId = slaveID
 	handler.Timeout = 5 * time.Second
 
 	err := handler.Connect()
 	defer handler.Close()
 	client := modbus.NewClient(handler)
 
-	results, err := client.ReadHoldingRegisters(540, uint16(*regQuantity))
-	fmt.Printf("%X", results)
+	results, err := client.ReadHoldingRegisters(uint16(startReg), uint16(regQuantity))
 	if err != nil {
 		fmt.Printf("{\"status\":\"error\", \"error\":\"%s\"}", err)
 	}
-	/*
-		i := 0
-		for i < len(results) {
-			a := Float32frombytes(results[i : i+4])
-			if math.IsNaN(float64(a)) {
-				data = append(data, 0)
-			} else {
-				data = append(data, a)
-			}
-			i += 4
-		}*/
-	/*
-		for l := 0; l < len(data); l++ {
-			if l == 0 {
-				fmt.Printf("{ \"%s\": ", paramName[l])
-			} else {
-				fmt.Printf(", \"%s\": ", paramName[l])
-			}
-			fmt.Print(data[l])
-		}
-		if len(results) != 0 {
-			fmt.Printf(", \"version\": \"%s\"}", version)
-		}*/
+	//var a = results
+	return results
 }
 
-func Float32frombytes(bytes []byte) float32 {
+/*func Float32frombytes(bytes []byte) float32 {
 	bits := binary.BigEndian.Uint32(bytes)
 	float := math.Float32frombits(bits)
 	return float
 }
-
+*/
 /* build for rapberry
 env GOOS=linux GOARCH=arm GOARM=5 go build
 */
