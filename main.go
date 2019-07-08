@@ -339,7 +339,7 @@ func RequestTyp7(slaveID byte, serverParam string) {
 			fmt.Printf("%d", binary.BigEndian.Uint16(answer))
 			fmt.Print(",")
 		} else if l == 19 {
-			fmt.Printf("{\"%s\": ", params7[l].Name)
+			fmt.Printf("\"%s\": ", params7[l].Name)
 			var answer = readModbus(slaveID, params7[l].Id-40000, byte(1), string(serverParam))
 			//fmt.Println(answer)
 			fmt.Printf("%d", answer)
@@ -372,52 +372,52 @@ func RequestTyp6(ansver []byte) {
 			fmt.Print(",")
 			t++
 		} else if l == 10 {
-			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("\"%s\": ", params6[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 15 {
-			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("\"%s\": ", params6[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 20 {
-			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("\"%s\": ", params6[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 25 {
-			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("\"%s\": ", params6[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 30 {
-			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("\"%s\": ", params6[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 35 {
-			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("\"%s\": ", params6[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 40 {
-			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("\"%s\": ", params6[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 45 {
-			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("\"%s\": ", params6[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 66 {
-			fmt.Printf("{ \"%s\": ", params6[t].Name)
+			fmt.Printf("\"%s\": ", params6[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 91 {
-			fmt.Printf("{\"%s\": ", params6[t].Name)
+			fmt.Printf("\"%s\": ", params6[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Printf(",\"version\": \"%s\"}", version)
 			t++
@@ -449,47 +449,47 @@ func RequestTyp5(ansver []byte) {
 			fmt.Print(",")
 			t++
 		} else if l == 3 {
-			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("\"%s\": ", params5[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 17 {
-			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("\"%s\": ", params5[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 23 {
-			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("\"%s\": ", params5[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 44 {
-			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("\"%s\": ", params5[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l > 51 && l < 62 {
-			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("\"%s\": ", params5[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l > 65 && l < 69 {
-			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("\"%s\": ", params5[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l > 83 && l < 86 {
-			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("\"%s\": ", params5[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 87 {
-			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("\"%s\": ", params5[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 88 {
-			fmt.Printf("{ \"%s\": ", params5[t].Name)
+			fmt.Printf("\"%s\": ", params5[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Printf(",\"version\": \"%s\"}", version)
 			t++
@@ -521,32 +521,32 @@ func RequestTyp4(ansver []byte) {
 			fmt.Print(",")
 			t++
 		} else if l > 0 && l < 17 {
-			fmt.Printf("{ \"%s\": ", params4[t].Name)
+			fmt.Printf("\"%s\": ", params4[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l > 44 && l < 47 {
-			fmt.Printf("{ \"%s\": ", params4[t].Name)
+			fmt.Printf("\"%s\": ", params4[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l > 49 && l < 52 {
-			fmt.Printf("{ \"%s\": ", params4[t].Name)
+			fmt.Printf("\"%s\": ", params4[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 53 {
-			fmt.Printf("{ \"%s\": ", params4[t].Name)
+			fmt.Printf("\"%s\": ", params4[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l > 54 && l < 61 {
-			fmt.Printf("{ \"%s\": ", params4[t].Name)
+			fmt.Printf("\"%s\": ", params4[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 61 {
-			fmt.Printf("{ \"%s\": ", params4[t].Name)
+			fmt.Printf("\"%s\": ", params4[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Printf(",\"version\": \"%s\"}", version)
 			t++
@@ -578,17 +578,17 @@ func RequestTyp3(ansver []byte) {
 			fmt.Print(",")
 			t++
 		} else if l > 0 && l < 75 {
-			fmt.Printf("{ \"%s\": ", params3[t].Name)
+			fmt.Printf("\"%s\": ", params3[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l > 78 && l < 98 {
-			fmt.Printf("{ \"%s\": ", params3[t].Name)
+			fmt.Printf("\"%s\": ", params3[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 100 {
-			fmt.Printf("{ \"%s\": ", params3[t].Name)
+			fmt.Printf("\"%s\": ", params3[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Printf(",\"version\": \"%s\"}", version)
 			t++
@@ -621,32 +621,32 @@ func RequestTyp2(ansver []byte) {
 			fmt.Print(",")
 			t++
 		} else if l == 1 {
-			fmt.Printf("{ \"%s\": ", params2[t].Name)
+			fmt.Printf("\"%s\": ", params2[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l > 4 && l < 7 {
-			fmt.Printf("{ \"%s\": ", params2[t].Name)
+			fmt.Printf("\"%s\": ", params2[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l > 9 && l < 20 {
-			fmt.Printf("{ \"%s\": ", params2[t].Name)
+			fmt.Printf("\"%s\": ", params2[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 21 {
-			fmt.Printf("{ \"%s\": ", params2[t].Name)
+			fmt.Printf("\"%s\": ", params2[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l > 26 && l < 58 {
-			fmt.Printf("{ \"%s\": ", params2[t].Name)
+			fmt.Printf("\"%s\": ", params2[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 58 {
-			fmt.Printf("{ \"%s\": ", params2[t].Name)
+			fmt.Printf("\"%s\": ", params2[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Printf(",\"version\": \"%s\"}", version)
 			t++
@@ -678,22 +678,22 @@ func RequestTyp1(ansver []byte) {
 			fmt.Print(",")
 			t++
 		} else if l == 2 {
-			fmt.Printf("{ \"%s\": ", params1[t].Name)
+			fmt.Printf("\"%s\": ", params1[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l > 32 && l < 39 {
-			fmt.Printf("{ \"%s\": ", params1[t].Name)
+			fmt.Printf("\"%s\": ", params1[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l > 39 && l < 41 {
-			fmt.Printf("{ \"%s\": ", params1[t].Name)
+			fmt.Printf("\"%s\": ", params1[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Print(",")
 			t++
 		} else if l == 41 {
-			fmt.Printf("{ \"%s\": ", params1[t].Name)
+			fmt.Printf("\"%s\": ", params1[t].Name)
 			fmt.Printf("%d", data[l])
 			fmt.Printf(",\"version\": \"%s\"}", version)
 			t++
