@@ -14,7 +14,7 @@ import (
 !!!!!!!!!!!! VERSION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
-const version = "0.01.0"
+const version = "0.01.0(1.0.29М)"
 
 /*
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -290,8 +290,8 @@ func main() {
 
 	//var data []float32
 
-	addressIP := flag.String("ip", "10.10.12.23:2001", "a string")
-	requestType := flag.Int("request type", 1, "a int")
+	addressIP := flag.String("ip", "localhost:2001", "a string")
+	requestType := flag.Int("r", 1, "a int")
 	slaveID := flag.Int("id", 1, "an int")
 	//regQuantity := flag.Uint("q", 115, "an uint")
 	flag.Parse()
@@ -362,8 +362,8 @@ func RequestTyp6(ansver []byte) {
 		}
 		i += 2
 	}
-	fmt.Println(data)
-	fmt.Println(len(data))
+	//fmt.Println(data)
+	//fmt.Println(len(data))
 	t := 0
 	for l := 0; l < len(data); l++ {
 		if l == 0 {
@@ -439,8 +439,8 @@ func RequestTyp5(ansver []byte) {
 		}
 		i += 2
 	}
-	fmt.Println(data)
-	fmt.Println(len(data))
+	//fmt.Println(data)
+	//fmt.Println(len(data))
 	t := 0
 	for l := 0; l < len(data); l++ {
 		if l == 0 {
@@ -511,8 +511,8 @@ func RequestTyp4(ansver []byte) {
 		}
 		i += 2
 	}
-	fmt.Println(data)
-	fmt.Println(len(data))
+	//fmt.Println(data)
+	//fmt.Println(len(data))
 	t := 0
 	for l := 0; l < len(data); l++ {
 		if l == 0 {
@@ -568,9 +568,8 @@ func RequestTyp3(ansver []byte) {
 		}
 		i += 2
 	}
-	fmt.Println(data)
-	fmt.Println(len(data))
-
+	//fmt.Println(data)
+	//fmt.Println(len(data))
 	t := 0
 	for l := 0; l < len(data); l++ {
 		if l == 0 {
@@ -612,8 +611,8 @@ func RequestTyp2(ansver []byte) {
 		}
 		i += 2
 	}
-	fmt.Println(data)
-	fmt.Println(len(data))
+	//fmt.Println(data)
+	//fmt.Println(len(data))
 	t := 0
 	for l := 0; l < len(data); l++ {
 		if l == 0 {
@@ -669,8 +668,8 @@ func RequestTyp1(ansver []byte) {
 		}
 		i += 2
 	}
-	fmt.Println(data)
-	fmt.Println(len(data))
+	//fmt.Println(data)
+	//fmt.Println(len(data))
 	t := 0
 	for l := 0; l < len(data); l++ {
 		if l == 0 {
