@@ -291,7 +291,7 @@ func main() {
 	//var data []float32
 
 	addressIP := flag.String("ip", "10.10.12.23:2001", "a string")
-	requestType := flag.Int("request type", 7, "a int")
+	requestType := flag.Int("request type", 1, "a int")
 	slaveID := flag.Int("id", 1, "an int")
 	//regQuantity := flag.Uint("q", 115, "an uint")
 	flag.Parse()
@@ -322,29 +322,6 @@ func main() {
 	}
 }
 
-/*
-	i := 0
-	for i < len(results) {
-		a := Float32frombytes(results[i : i+4])
-		if math.IsNaN(float64(a)) {
-			data = append(data, 0)
-		} else {
-			data = append(data, a)
-		}
-		i += 4
-	}*/
-/*
-	for l := 0; l < len(data); l++ {
-		if l == 0 {
-			fmt.Printf("{ \"%s\": ", paramName[l])
-		} else {
-			fmt.Printf(", \"%s\": ", paramName[l])
-		}
-		fmt.Print(data[l])
-	}
-	if len(results) != 0 {
-		fmt.Printf(", \"version\": \"%s\"}", version)
-	}*/
 func RequestTyp7(slaveID byte, serverParam string) {
 	for l := 0; l < len(params7); l++ {
 		time.Sleep(20 * time.Millisecond)
@@ -744,12 +721,6 @@ func readModbus(slaveID byte, startReg uint16, regQuantity byte, serverParam str
 	return results
 }
 
-/*func Float32frombytes(bytes []byte) float32 {
-	bits := binary.BigEndian.Uint32(bytes)
-	float := math.Float32frombits(bits)
-	return float
-}
-*/
 /* build for rapberry
 env GOOS=linux GOARCH=arm GOARM=5 go build
 */
