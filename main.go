@@ -14,7 +14,7 @@ import (
 !!!!!!!!!!!! VERSION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
-const version = "0.01.03(1.0.29М)"
+const version = "0.01.04(1.0.29М)"
 
 /*
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -286,6 +286,26 @@ var params7 = Modbusparams{
 	Modbusparam{224, 44167, "44167_Work_interval_consumption", "DT_REAL_1"},
 }
 
+var params8 = Modbusparams{
+	Modbusparam{1, 40141, "40141_RID1000A_BOARD.Water_temperature", "DT_NUMERIC"},
+	Modbusparam{2, 40143, "40143_RID1000A_BOARD.Fuel_level", "DT_NUMERIC"},
+	Modbusparam{3, 40145, "40145_RID1000A_BOARD.Battery_voltage", "DT_NUMERIC"},
+	Modbusparam{4, 40147, "40147_RID1000A_BOARD.Line_R_voltage_mains", "DT_NUMERIC"},
+	Modbusparam{5, 40149, "40149_RID1000A_BOARD.Line_S_voltage_mains", "DT_NUMERIC"},
+	Modbusparam{6, 40151, "40151_RID1000A_BOARD.Line_T_voltage_mains", "DT_NUMERIC"},
+	Modbusparam{7, 40153, "40153_RID1000A_BOARD.Line_R_voltage_genset", "DT_REAL_1"},
+	Modbusparam{8, 40155, "40155_RID1000A_BOARD.Line_S_voltage_genset", "DT_REAL_1"},
+	Modbusparam{9, 40157, "40157_RID1000A_BOARD.Line_T_voltage_genset", "DT_REAL_1"},
+	Modbusparam{10, 40165, "40165_RID1000A_BOARD.Frequency_mains", "DT_REAL_1"},
+	Modbusparam{11, 40167, "40167_RID1000A_BOARD.Frequency_genset", "DT_REAL_2"},
+	Modbusparam{12, 40218, "40218_RID1000A_BOARD.Phase_voltage_R-S_mains", "DT_ONOFF"},
+	Modbusparam{13, 40220, "40220_RID1000A_BOARD.Phase_voltage_S-T_mains", "DT_ONOFF"},
+	Modbusparam{14, 40222, "40222_RID1000A_BOARD.Phase_voltage_T-R_mains", "DT_ONOFF"},
+	Modbusparam{15, 40224, "40224_RID1000A_BOARD.Phase_voltage_R-S_genset", "DT_ONOFF"},
+	Modbusparam{16, 40226, "40226_RID1000A_BOARD.Phase_voltage_S-T_genset", "DT_ONOFF"},
+	Modbusparam{17, 40228, "40228_RID1000A_BOARD.Phase_voltage_T-R_genset", "DT_ONOFF"},
+}
+
 func main() {
 
 	//var data []float32
@@ -319,6 +339,36 @@ func main() {
 		RequestTyp6(answer)
 	case 7:
 		RequestTyp7(byte(*slaveID), string(serverParam))
+	case 8:
+		RequestTyp8(byte(*slaveID), string(serverParam))
+	}
+}
+
+func RequestTyp8(slaveID byte, serverParam string) {
+	for l := 0; l < len(params8); l++ {
+		time.Sleep(20 * time.Millisecond)
+		//fmt.Println(l)
+		if l == 0 {
+			fmt.Printf("{\"%s\": ", params8[l].Name)
+			var answer = readModbus(slaveID, params8[l].Id-40000, byte(1), string(serverParam))
+			//fmt.Println(answer)
+			fmt.Printf("%d", binary.BigEndian.Uint16(answer))
+			fmt.Print(",")
+		} else if l > 0 && l < len(params8)-1 {
+			fmt.Printf("\"%s\": ", params8[l].Name)
+			var answer = readModbus(slaveID, params8[l].Id-40000, byte(1), string(serverParam))
+			//fmt.Println(answer)
+			fmt.Printf("%d", binary.BigEndian.Uint16(answer))
+			fmt.Print(",")
+		} else if l == len(params8)-1 {
+			fmt.Printf("\"%s\": ", params8[l].Name)
+			var answer = readModbus(slaveID, params8[l].Id-40000, byte(1), string(serverParam))
+			//fmt.Println(answer)
+			fmt.Printf("%d", answer)
+			fmt.Printf(",\"version\": \"%s\"}", version)
+		} else {
+
+		}
 	}
 }
 
@@ -332,13 +382,13 @@ func RequestTyp7(slaveID byte, serverParam string) {
 			//fmt.Println(answer)
 			fmt.Printf("%d", binary.BigEndian.Uint16(answer))
 			fmt.Print(",")
-		} else if l > 0 && l < 19 {
+		} else if l > 0 && l < len(params7) {
 			fmt.Printf("\"%s\": ", params7[l].Name)
 			var answer = readModbus(slaveID, params7[l].Id-40000, byte(1), string(serverParam))
 			//fmt.Println(answer)
 			fmt.Printf("%d", binary.BigEndian.Uint16(answer))
 			fmt.Print(",")
-		} else if l == 19 {
+		} else if l == len(params7) {
 			fmt.Printf("\"%s\": ", params7[l].Name)
 			var answer = readModbus(slaveID, params7[l].Id-40000, byte(1), string(serverParam))
 			//fmt.Println(answer)
