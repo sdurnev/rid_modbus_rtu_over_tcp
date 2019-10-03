@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/rid-modbus-rtu-over-tcp.iml" filepath="$PROJECT_DIR$/.idea/rid-modbus-rtu-over-tcp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../rid_modbus_rtu_over_tcp/.idea/rid_modbus_rtu_over_tcp.iml" filepath="$PROJECT_DIR$/../rid_modbus_rtu_over_tcp/.idea/rid_modbus_rtu_over_tcp.iml" />
     </modules>
   </component>
 </project>
