@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="rid_modbus_rtu_over_tcp__x64" type="GoApplicationRunConfiguration" factoryName="Go Application">
+  <configuration default="false" name="rid_modbus_rtu_over_tcp__linux" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="rid_modbus_rtu_over_tcp" />
     <working_directory value="$PROJECT_DIR$/" />
     <envs>
@@ -10,7 +10,6 @@
     <filePath value="$PROJECT_DIR$/main.go" />
     <directory value="$PROJECT_DIR$/" />
     <output_directory value="$PROJECT_DIR$/bin/0.01.5/linux" />
-    <option name="run" value="false" />
     <method v="2" />
   </configuration>
 </component>

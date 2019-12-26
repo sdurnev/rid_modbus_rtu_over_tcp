@@ -17,5 +17,5 @@ Programm flags:
 
 Example:
 
-rid_modbus_rtuotcp_rpi_linux -ip=10.10.10.10:2001 -r=3 -id=2
+`rid_modbus_rtuotcp -ip=10.10.10.10:2001 -r=3 -id=2`
 
