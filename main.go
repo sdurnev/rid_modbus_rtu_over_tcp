@@ -14,7 +14,7 @@ import (
 !!!!!!!!!!!! VERSION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
-const version = "0.01.05(1.0.29М)"
+const version = "0.01.06(1.0.29М)"
 
 /*
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -764,10 +764,12 @@ func readModbus(slaveID byte, startReg uint16, regQuantity byte, serverParam str
 
 	results, err := client.ReadHoldingRegisters(uint16(startReg), uint16(regQuantity))
 	if err != nil {
-		fmt.Printf("{\"status\":\"error\", \"error\":\"%s\"}", err)
+		fmt.Printf("{\"status\":\"error\", \"error\":\"%s\",\"version\": \"%s\"}", err, version)
+		return results
+	} else {
+		return results
 	}
 	//var a = results
-	return results
 }
 
 /* build for rapberry
